@@ -1,0 +1,57 @@
+{
+  "version": "2.0",
+  "description": "Major version upgrade - added departments, doctors, and appointments tables",
+  "tables": {
+    "patients": {
+      "fields": {
+        "patient_id": {"type": "INT", "primary_key": true, "nullable": false},
+        "first_name": {"type": "VARCHAR(50)", "nullable": false},
+        "last_name": {"type": "VARCHAR(50)", "nullable": false},
+        "birth_date": {"type": "DATE", "nullable": false},
+        "gender": {"type": "VARCHAR(10)", "nullable": false},
+        "address": {"type": "VARCHAR(255)", "nullable": true},
+        "insurance_number": {"type": "VARCHAR(50)", "nullable": true},
+        "created_at": {"type": "DATETIME", "nullable": false},
+        "updated_at": {"type": "DATETIME", "nullable": true}
+      },
+      "indexes": ["patient_id", "last_name"]
+    },
+    "patient_contacts": {
+      "fields": {
+        "contact_id": {"type": "INT", "primary_key": true, "nullable": false},
+        "patient_id": {"type": "INT", "nullable": false},
+        "phone": {"type": "VARCHAR(20)", "nullable": true},
+        "email": {"type": "VARCHAR(100)", "nullable": true},
+        "emergency_contact": {"type": "VARCHAR(100)", "nullable": true},
+        "emergency_phone": {"type": "VARCHAR(20)", "nullable": true}
+      },
+      "foreign_keys": {
+        "patient_id": {"references": "patients.patient_id", "on_delete": "CASCADE"}
+      },
+      "indexes": ["contact_id", "patient_id"]
+    },
+    "departments": {
+      "fields": {
+        "department_id": {"type": "INT", "primary_key": true, "nullable": false},
+        "department_name": {"type": "VARCHAR(100)", "nullable": false},
+        "location": {"type": "VARCHAR(100)", "nullable": true},
+        "phone": {"type": "VARCHAR(20)", "nullable": true}
+      },
+      "indexes": ["department_id"]
+    },
+    "doctors": {
+      "fields": {
+        "doctor_id": {"type": "INT", "primary_key": true, "nullable": false},
+        "department_id": {"type": "INT", "nullable": false},
+        "first_name": {"type": "VARCHAR(50)", "nullable": false},
+        "last_name": {"type": "VARCHAR(50)", "nullable": false},
+        "specialization": {"type": "VARCHAR(100)", "nullable": false},
+        "license_number": {"type": "VARCHAR(50)", "nullable": false}
+      },
+      "foreign_keys": {
+        "department_id": {"references": "departments.department_id", "on_delete": "RESTRICT"}
+      },
+      "indexes": ["doctor_id", "department_id"]
+    }
+  }
+}

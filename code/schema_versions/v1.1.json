@@ -1,0 +1,54 @@
+{
+  "version": "1.1",
+  "description": "Added email field and diagnosis table",
+  "tables": {
+    "patients": {
+      "fields": {
+        "patient_id": {"type": "INT", "primary_key": true, "nullable": false},
+        "name": {"type": "VARCHAR(100)", "nullable": false},
+        "birth_date": {"type": "DATE", "nullable": false},
+        "gender": {"type": "VARCHAR(10)", "nullable": false},
+        "phone": {"type": "VARCHAR(20)", "nullable": true},
+        "email": {"type": "VARCHAR(100)", "nullable": true, "default": ""}
+      },
+      "indexes": ["patient_id"]
+    },
+    "studies": {
+      "fields": {
+        "study_id": {"type": "INT", "primary_key": true, "nullable": false},
+        "patient_id": {"type": "INT", "nullable": false},
+        "study_date": {"type": "DATETIME", "nullable": false},
+        "modality": {"type": "VARCHAR(10)", "nullable": false},
+        "description": {"type": "TEXT", "nullable": true}
+      },
+      "foreign_keys": {
+        "patient_id": {"references": "patients.patient_id", "on_delete": "CASCADE"}
+      },
+      "indexes": ["study_id", "patient_id"]
+    },
+    "images": {
+      "fields": {
+        "image_id": {"type": "INT", "primary_key": true, "nullable": false},
+        "study_id": {"type": "INT", "nullable": false},
+        "image_path": {"type": "VARCHAR(255)", "nullable": false},
+        "image_size": {"type": "INT", "nullable": false}
+      },
+      "foreign_keys": {
+        "study_id": {"references": "studies.study_id", "on_delete": "CASCADE"}
+      },
+      "indexes": ["image_id", "study_id"]
+    },
+    "diagnosis": {
+      "fields": {
+        "diagnosis_id": {"type": "INT", "primary_key": true, "nullable": false},
+        "study_id": {"type": "INT", "nullable": false},
+        "diagnosis_text": {"type": "TEXT", "nullable": false},
+        "created_at": {"type": "DATETIME", "nullable": false}
+      },
+      "foreign_keys": {
+        "study_id": {"references": "studies.study_id", "on_delete": "CASCADE"}
+      },
+      "indexes": ["diagnosis_id", "study_id"]
+    }
+  }
+}
